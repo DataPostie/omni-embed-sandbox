@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { apiFetch } from "../apiConfig";
+import embedConfig from "@/embedConfig.json"
 import ErrorBoundary from "./ErrorBoundary";
 
 export default function DashboardPanel() {
@@ -12,7 +13,7 @@ export default function DashboardPanel() {
     useEffect(() => {
         async function fetchIframeUrl() {
             try {
-                const iframeUrlResponse = await apiFetch("/api/embed", "POST", { contentId: "test" })
+                const iframeUrlResponse = await apiFetch("/api/embed", "POST", { contentId: embedConfig.contentId })
                 setIframeUrl(iframeUrlResponse.iframeUrl)
             } catch (err: any) {
                 setError(err)
