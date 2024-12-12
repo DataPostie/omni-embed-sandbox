@@ -1,6 +1,9 @@
+import DashboardPanel from "./components/DashboardPanel";
+
 export default function Home() {
   return (
-    <div className="md:px-20">
+    <div>
+      <DashboardPanel />
     </div>
   );
 }
