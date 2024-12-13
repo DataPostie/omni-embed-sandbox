@@ -1,8 +1,16 @@
 {
-    "contentId": "rWU-gHMy",
-    "users": [
+    "examples": [
         {
-            
+            "title": "Air Quality Example",
+            "content": [
+                {
+                    "id": "rWU-gHMy",
+                    "title": "Air Quality"
+                }
+            ],
+            "user_attributes": {
+                "country": "UK"
+            }
         }
     ]
 }

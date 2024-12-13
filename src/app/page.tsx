@@ -1,9 +1,7 @@
-import DashboardPanel from "./components/DashboardPanel";
+import ExampleNavigator from "./components/ExampleNavigator";
 
 export default function Home() {
   return (
-    <div>
-      <DashboardPanel />
-    </div>
+    <ExampleNavigator />
   );
 }

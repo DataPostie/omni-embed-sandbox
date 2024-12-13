@@ -1,11 +1,9 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
 import { apiFetch } from "../apiConfig";
-import embedConfig from "@/embedConfig.json"
 import ErrorBoundary from "./ErrorBoundary";
+import { EmbedExample } from "@/types";
 
-export default function DashboardPanel() {
+export default function DashboardPanel({ embedExample }: { embedExample: EmbedExample }) {
 
     const [iframeUrl, setIframeUrl] = useState<string | null>(null)
     const [error, setError] = useState(null)
@@ -13,7 +11,7 @@ export default function DashboardPanel() {
     useEffect(() => {
         async function fetchIframeUrl() {
             try {
-                const iframeUrlResponse = await apiFetch("/api/embed", "POST", { contentId: embedConfig.contentId })
+                const iframeUrlResponse = await apiFetch("/api/embed", "POST", { contentId: embedExample.content[0].id })
                 setIframeUrl(iframeUrlResponse.iframeUrl)
             } catch (err: any) {
                 setError(err)
@@ -26,7 +24,7 @@ export default function DashboardPanel() {
         <div>
             <ErrorBoundary loading={false} error={error}>
                 { iframeUrl && (
-                    <iframe className="h-full w-full min-h-[80vh]" src={iframeUrl} />
+                    <iframe className="h-full w-full min-h-[85vh]" src={iframeUrl} />
                 ) }
             </ErrorBoundary>
         </div>
