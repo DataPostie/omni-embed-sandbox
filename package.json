@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@omni-co/embed": "^0.4.11",
+    "apache-arrow": "^18.1.0",
     "next": "15.1.0",
     "primeicons": "^7.0.0",
     "primereact": "^10.8.5",

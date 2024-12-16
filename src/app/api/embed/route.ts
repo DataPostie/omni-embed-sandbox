@@ -8,15 +8,15 @@ const createSignedEmbedUrl = async (userEmbedSsoDashboardProps: UserEmbedSsoDash
     if (!process.env.OMNI_EMBED_SECRET) {
         throw new Error('Omni embed secret not found.')
     }
-    if (!process.env.OMNI_EMBED_HOST) {
-        throw new Error('Omni embed host not specified.')
+    if (!process.env.OMNI_HOST) {
+        throw new Error('Omni host not specified.')
     }
     const embedSsoDashboardProps: EmbedSsoDashboardProps = {
         contentId: userEmbedSsoDashboardProps.contentId,
         externalId: 'sandbox_user',
         name: 'Sandbox User',
         secret: process.env.OMNI_EMBED_SECRET,
-        host: process.env.OMNI_EMBED_HOST
+        host: process.env.OMNI_HOST.replace("omniapp", "embed-omniapp")
     }
     const iframeUrl = await embedSsoDashboard(embedSsoDashboardProps);
     return iframeUrl

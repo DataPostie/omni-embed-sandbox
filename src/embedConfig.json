@@ -12,5 +12,23 @@
                 "country": "UK"
             }
         }
-    ]
+    ],
+    "api_query_call_example": {
+        "modelId": "3796c3eb-13d0-40b5-a4ed-d75d1a54143f",
+        "table": "retail__fact_transactions",
+        "fields": [
+            "total_sales"
+        ],
+        "filters": {
+            "retail__fact_transactions.transaction_date": {
+                "is_negative": false,
+                "left_side": "7 days ago",
+                "right_side": "7 days",
+                "kind": "TIME_FOR_INTERVAL_DURATION",
+                "type": "date",
+                "ui_type": "PAST",
+                "isFiscal": false
+            }
+        }
+    }
 }
