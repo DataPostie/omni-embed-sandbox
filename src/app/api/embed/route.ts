@@ -1,7 +1,8 @@
 import { EmbedConnectionRoles, embedSsoDashboard, EmbedSsoDashboardProps } from '@omni-co/embed'
 
 interface UserEmbedSsoDashboardProps {
-    contentId: string
+    contentId: string,
+    userAttributes?: any
 }
 
 const createSignedEmbedUrl = async (userEmbedSsoDashboardProps: UserEmbedSsoDashboardProps): Promise<string> => {
@@ -16,7 +17,8 @@ const createSignedEmbedUrl = async (userEmbedSsoDashboardProps: UserEmbedSsoDash
         externalId: 'sandbox_user',
         name: 'Sandbox User',
         secret: process.env.OMNI_EMBED_SECRET,
-        host: process.env.OMNI_HOST.replace("omniapp", "embed-omniapp")
+        host: process.env.OMNI_HOST.replace("omniapp", "embed-omniapp"),
+        userAttributes: userEmbedSsoDashboardProps.userAttributes
     }
     const iframeUrl = await embedSsoDashboard(embedSsoDashboardProps);
     return iframeUrl
@@ -28,9 +30,7 @@ export async function POST(request: Request) {
         if (!requestData || !requestData.contentId) {
             throw new Error('Please specify a valid content ID.')
         }
-        const iframeUrl = await createSignedEmbedUrl({
-            contentId: requestData.contentId
-        })
+        const iframeUrl = await createSignedEmbedUrl({...requestData})
         return new Response(JSON.stringify({ iframeUrl: iframeUrl }), { status: 200 })
     } catch (error) {
         return new Response(((error as any).message || error), {

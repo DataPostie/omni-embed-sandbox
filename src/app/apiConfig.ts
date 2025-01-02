@@ -13,15 +13,18 @@ export const apiFetch = async (
     }
     const response = await fetch(path, fetchParams);
     if (!response || !response.ok) {
-        const errorMessage = await response.text();
-        throw new Error(errorMessage);
+        throw new Error(await response.text());
     } else if (
         response.headers.get("Content-Length") &&
         parseInt(response.headers.get("Content-Length")!) === 0
     ) {
         return true;
     } else {
-        const responseJson = await response.json();
-        return responseJson;
+        const responseText = await response.text();
+        try {
+            return JSON.parse(responseText);
+        } catch (jsonError) {
+            return responseText;
+        }
     }
 };

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { apiFetch } from "../apiConfig";
 import ErrorBoundary from "./ErrorBoundary";
-import { EmbedExample } from "@/types";
+import { EmbedDashboard } from "@/types";
 
-export default function DashboardPanel({ embedExample }: { embedExample: EmbedExample }) {
+export default function DashboardPanel({ embedDashboard, userAttributes }: { embedDashboard: EmbedDashboard, userAttributes?: any }) {
 
     const [iframeUrl, setIframeUrl] = useState<string | null>(null)
     const [error, setError] = useState(null)
@@ -11,14 +11,14 @@ export default function DashboardPanel({ embedExample }: { embedExample: EmbedEx
     useEffect(() => {
         async function fetchIframeUrl() {
             try {
-                const iframeUrlResponse = await apiFetch("/api/embed", "POST", { contentId: embedExample.content[0].id })
+                const iframeUrlResponse = await apiFetch("/api/embed", "POST", { contentId: embedDashboard.id, userAttributes: userAttributes })
                 setIframeUrl(iframeUrlResponse.iframeUrl)
             } catch (err: any) {
                 setError(err)
             }
         }
         fetchIframeUrl()
-    }, [])
+    }, [embedDashboard, userAttributes])
 
     return (
         <div>

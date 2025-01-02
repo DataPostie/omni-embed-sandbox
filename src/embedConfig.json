@@ -1,34 +1,50 @@
 {
-    "examples": [
+    "content":
         {
-            "title": "Air Quality Example",
-            "content": [
+            "title": "Sales & Marketing",
+            "dashboards": [
                 {
-                    "id": "rWU-gHMy",
-                    "title": "Air Quality"
+                    "id": "0917f42a",
+                    "title": "Sales"
+                },
+                {
+                    "id": "e78b5482",
+                    "title": "Marketing",
+                    "preload_api_query_call": {
+                        "modelId": "d99270a2-9cfb-4bc7-8735-bd4fd4481278",
+                        "table": "retail__fact_transactions",
+                        "fields": [
+                            "retail__fact_transactions.online_conversion_rate"
+                        ],
+                        "filters": {
+                            "retail__fact_transactions.transaction_date": {
+                                "is_negative": false,
+                                "left_side": "7 days ago",
+                                "right_side": "7 days",
+                                "kind": "TIME_FOR_INTERVAL_DURATION",
+                                "type": "date",
+                                "ui_type": "PAST",
+                                "isFiscal": false
+                            }
+                        },
+                        "user_attribute_key": "manufacturer_id",
+                        "user_attribute_filter_field": "retail__dim_products.manufacturer_id"
+                    }
                 }
-            ],
+            ]
+        },
+    "users": [
+        {
+            "id": 1,
             "user_attributes": {
-                "country": "UK"
+                "manufacturer_id": [2]
+            }
+        },
+        {
+            "id": 2,
+            "user_attributes": {
+                "manufacturer_id": [673]
             }
         }
-    ],
-    "api_query_call_example": {
-        "modelId": "3796c3eb-13d0-40b5-a4ed-d75d1a54143f",
-        "table": "retail__fact_transactions",
-        "fields": [
-            "total_sales"
-        ],
-        "filters": {
-            "retail__fact_transactions.transaction_date": {
-                "is_negative": false,
-                "left_side": "7 days ago",
-                "right_side": "7 days",
-                "kind": "TIME_FOR_INTERVAL_DURATION",
-                "type": "date",
-                "ui_type": "PAST",
-                "isFiscal": false
-            }
-        }
-    }
+    ]  
 }
