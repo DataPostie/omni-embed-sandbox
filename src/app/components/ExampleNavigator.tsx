@@ -11,18 +11,36 @@ import embedConfig from "@/embedConfig.json"
 import { EmbedDashboard, EmbedUser } from "@/types";
 
 export default function ExampleNavigator() {
-    const [selectedExample, setSelectedExample] = useState<EmbedUser | null>(null);
+    const [selectedUser, setSelectedUser] = useState<EmbedUser | null>(null);
+    const [userDetails, serUserDetails] = useState<EmbedUser | null>(null);
     const [dashboardsToShow, setDashboardsToShow] = useState<EmbedDashboard[] | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState(null);
     
     useEffect(() => {
+        async function loginUser() {
+            try {
+                if (!selectedUser) { return null; }
+                setLoading(true);
+                const newUserDetails = await apiFetch("/api/auth", "POST", { token: selectedUser.accessToken })
+                serUserDetails(newUserDetails)
+                setLoading(false);
+            } catch (err: any) {
+                setLoading(false);
+                setError(err);
+            }
+        }
+        loginUser()
+    }, [selectedUser])
+
+    useEffect(() => {
         async function checkIfDataAvailable() {
             try {
+                if (!userDetails) { return null; }
                 setLoading(true);
                 const preloadApiQueryCallResponses = await Promise.all(embedConfig.content.dashboards.map(dashboard => {
                     if (!dashboard.preload_api_query_call) { return new Promise(resolve => resolve(1)); }
-                    return apiFetch("/api/query", "POST", { dashboard: dashboard, user: selectedExample })
+                    return apiFetch("/api/query", "POST", { dashboard: dashboard, user: userDetails })
                 }))
                 setDashboardsToShow(embedConfig.content.dashboards.filter((dashboard, index) => preloadApiQueryCallResponses[index]));
                 setLoading(false);
@@ -31,32 +49,30 @@ export default function ExampleNavigator() {
                 setError(err);
             }
         }
-        if (selectedExample) {
-            checkIfDataAvailable()
-        }
-    }, [selectedExample])
+        checkIfDataAvailable()
+    }, [userDetails])
 
     return (
         <div>
-            {!selectedExample && (
+            {!selectedUser && (
                 <ExampleSelector
-                    selectedExample={selectedExample}
-                    setSelectedExample={setSelectedExample}
+                    selectedUser={selectedUser}
+                    setSelectedUser={setSelectedUser}
                 />
             )}
             <ErrorBoundary loading={loading} error={error}>
-                {selectedExample && dashboardsToShow && (
+                {userDetails && dashboardsToShow && (
                     <div>
                         <TabView pt ={{ 
                             nav: { className: "bg-transparent" }
                         }}>
                             { dashboardsToShow.map(dashboard => (
                                 <TabPanel key={dashboard.id} header={dashboard.title}>
-                                    <DashboardPanel embedDashboard={dashboard} userAttributes={selectedExample.user_attributes} />
+                                    <DashboardPanel embedDashboard={dashboard} userAttributes={userDetails.user_attributes} />
                                 </TabPanel>
                             )) }
                         </TabView>
-                        <Button className="mt-3 py-1 px-3" onClick={() => setSelectedExample(null)}><span><i className="pi pi-arrow-left pr-2"></i>Back</span></Button>
+                        <Button className="mt-3 py-1 px-3" onClick={() => setSelectedUser(null)}><span><i className="pi pi-arrow-left pr-2"></i>Back</span></Button>
                     </div>
                 )}
             </ErrorBoundary>

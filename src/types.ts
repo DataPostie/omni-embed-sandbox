@@ -11,6 +11,7 @@ export interface EmbedContent {
 
 export interface EmbedUser {
     id: number,
+    accessToken: string,
     user_attributes: any
 }
 

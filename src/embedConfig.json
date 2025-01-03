@@ -36,12 +36,14 @@
     "users": [
         {
             "id": 1,
+            "accessToken": "dummyToken1",
             "user_attributes": {
                 "manufacturer_id": [2]
             }
         },
         {
             "id": 2,
+            "accessToken": "dummyToken2",
             "user_attributes": {
                 "manufacturer_id": [673]
             }
